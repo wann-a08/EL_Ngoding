@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Statistik — SalesAdmin Panel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ═══════════════════════════════════
+       SIDEBAR
+  ════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">🛒</div>
+        <div class="sidebar-logo-text">
+          <span class="brand">SalesAdmin</span>
+          <span class="version">v1.0 · 2025</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+      <div class="nav-section-label">Menu Utama</div>
+
+      <a href="dashboard.html" class="nav-item" title="Dashboard">
+        <div class="nav-item-icon">📊</div>
+        Dashboard
+      </a>
+
+      <a href="statistics.html" class="nav-item active" title="Statistik">
+        <div class="nav-item-icon">📈</div>
+        Statistik
+        <span class="nav-badge">Live</span>
+      </a>
+
+      <div class="nav-section-label">Manajemen</div>
+
+      <a href="#" class="nav-item" title="Produk" onclick="showComingSoon(event, 'Produk')">
+        <div class="nav-item-icon">📦</div>
+        Produk
+      </a>
+
+      <a href="#" class="nav-item" title="Transaksi" onclick="showComingSoon(event, 'Transaksi')">
+        <div class="nav-item-icon">🧾</div>
+        Transaksi
+      </a>
+
+      <a href="#" class="nav-item" title="Pelanggan" onclick="showComingSoon(event, 'Pelanggan')">
+        <div class="nav-item-icon">👥</div>
+        Pelanggan
+      </a>
+
+      <div class="nav-section-label">Sistem</div>
+
+      <a href="#" class="nav-item" title="Pengaturan" onclick="showComingSoon(event, 'Pengaturan')">
+        <div class="nav-item-icon">⚙️</div>
+        Pengaturan
+      </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">A</div>
+        <div class="user-info">
+          <div class="user-name">Admin</div>
+          <div class="user-role">SUPER ADMIN</div>
+        </div>
+        <button class="logout-btn logout-trigger" title="Logout">🚪</button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- Overlay mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ═══════════════════════════════════
+       KONTEN UTAMA
+  ════════════════════════════════════ -->
+  <div class="main-content">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggle" title="Toggle Sidebar">☰</button>
+        <div>
+          <div class="page-title">Statistik</div>
+          <div class="page-breadcrumb">Analitik & grafik penjualan</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="currentDate">—</div>
+        <div class="topbar-notif" title="Notifikasi">
+          🔔
+          <span class="notif-dot"></span>
+        </div>
+        <button class="logout-btn logout-trigger" title="Logout" style="width:38px;height:38px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;">🚪</button>
+      </div>
+    </header>
+
+    <!-- Konten Halaman -->
+    <main class="page-content">
+
+      <!-- ── Grafik Baris 1: Penjualan Harian & Pendapatan Bulanan ── -->
+      <div class="stats-page-grid" style="grid-template-columns: 1fr 1fr;">
+
+        <!-- Grafik: Penjualan per Hari -->
+        <div class="chart-card-large">
+          <div class="section-header">
+            <div class="section-title"><span></span>Penjualan per Hari</div>
+            <div class="filter-tabs">
+              <button class="filter-tab active">Apr</button>
+              <button class="filter-tab" onclick="switchTab(this)">Mar</button>
+              <button class="filter-tab" onclick="switchTab(this)">Feb</button>
+            </div>
+          </div>
+          <div style="margin-bottom: 16px; display: flex; gap: 16px;">
+            <div style="text-align: left;">
+              <div style="font-size: 28px; font-weight: 800; font-family: var(--font-mono); color: var(--accent);">88</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Transaksi tertinggi/hari</div>
+            </div>
+            <div style="text-align: left;">
+              <div style="font-size: 28px; font-weight: 800; font-family: var(--font-mono); color: var(--green);">67.1</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Rata-rata/hari</div>
+            </div>
+          </div>
+          <div class="chart-wrapper-large">
+            <canvas id="salesLineChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Grafik: Pendapatan per Bulan -->
+        <div class="chart-card-large">
+          <div class="section-header">
+            <div class="section-title"><span></span>Pendapatan per Bulan</div>
+            <div class="filter-tabs">
+              <button class="filter-tab active">2025</button>
+              <button class="filter-tab" onclick="switchTab(this)">2024</button>
+            </div>
+          </div>
+          <div style="margin-bottom: 16px; display: flex; gap: 16px;">
+            <div style="text-align: left;">
+              <div style="font-size: 28px; font-weight: 800; font-family: var(--font-mono); color: var(--green);">Rp 3.09 M</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Total YTD 2025</div>
+            </div>
+            <div style="text-align: left; margin-left: 8px;">
+              <div style="font-size: 28px; font-weight: 800; font-family: var(--font-mono); color: var(--orange);">+23%</div>
+              <div style="font-size: 12px; color: var(--text-muted);">vs tahun lalu</div>
+            </div>
+          </div>
+          <div class="chart-wrapper-large">
+            <canvas id="revenueBarChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Grafik Baris 2: Kategori & Performa Mingguan ── -->
+      <div class="stats-page-grid" style="grid-template-columns: 1.3fr 1fr;">
+
+        <!-- Grafik: Kategori Produk (Donut) -->
+        <div class="chart-card-large">
+          <div class="section-header">
+            <div class="section-title"><span></span>Distribusi Kategori Produk</div>
+          </div>
+          <div class="chart-wrapper-medium">
+            <canvas id="categoryDonutChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Grafik: Performa Online vs Offline -->
+        <div class="chart-card-large">
+          <div class="section-header">
+            <div class="section-title"><span></span>Online vs Offline</div>
+          </div>
+          <div style="margin-bottom: 12px; display: flex; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #4f8ef7;"></div>
+              <span style="font-size: 12px; color: var(--text-muted);">Online</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <div style="width: 10px; height: 10px; border-radius: 50%; background: #a78bfa;"></div>
+              <span style="font-size: 12px; color: var(--text-muted);">Offline</span>
+            </div>
+          </div>
+          <div class="chart-wrapper-medium">
+            <canvas id="weeklyPerformChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Tabel Top 5 Produk ── -->
+      <div class="chart-card-large">
+        <div class="section-header">
+          <div class="section-title"><span></span>Top 5 Produk Terlaris</div>
+          <div style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);">📅 April 2025</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start;">
+
+          <!-- Kiri: Progress bars -->
+          <div class="progress-list" id="topProdukList">
+            <!-- Diisi oleh script.js -->
+          </div>
+
+          <!-- Kanan: Info tambahan dalam tabel kecil -->
+          <div>
+            <table class="data-table" style="font-size: 12px;">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Produk</th>
+                  <th>Terjual</th>
+                  <th>Pendapatan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span style="font-family: var(--font-mono); color: var(--orange);">🥇</span></td>
+                  <td style="color: var(--text-primary);">Laptop Asus ROG</td>
+                  <td style="font-family: var(--font-mono);">128</td>
+                  <td style="color: var(--green); font-family: var(--font-mono);">Rp 2.37 M</td>
+                </tr>
+                <tr>
+                  <td><span style="font-family: var(--font-mono); color: var(--text-muted);">🥈</span></td>
+                  <td>Mouse Logitech G Pro</td>
+                  <td style="font-family: var(--font-mono);">312</td>
+                  <td style="color: var(--green); font-family: var(--font-mono);">Rp 280.8 Jt</td>
+                </tr>
+                <tr>
+                  <td><span style="font-family: var(--font-mono); color: var(--text-muted);">🥉</span></td>
+                  <td>Monitor Samsung 27"</td>
+                  <td style="font-family: var(--font-mono);">84</td>
+                  <td style="color: var(--green); font-family: var(--font-mono);">Rp 352.8 Jt</td>
+                </tr>
+                <tr>
+                  <td><td>4</td></td>
+                  <td>Headset Sony WH-1000</td>
+                  <td style="font-family: var(--font-mono);">96</td>
+                  <td style="color: var(--green); font-family: var(--font-mono);">Rp 345.6 Jt</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Keyboard Mechanical</td>
+                  <td style="font-family: var(--font-mono);">156</td>
+                  <td style="color: var(--green); font-family: var(--font-mono);">Rp 148.2 Jt</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" style="
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  color: var(--text-primary);
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  box-shadow: var(--shadow);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+"></div>
+
+<script src="script.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', initStatistics);
+
+  // Switch filter tab (hanya visual, data tidak berubah di demo ini)
+  function switchTab(btn) {
+    const tabs = btn.parentElement.querySelectorAll('.filter-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function showComingSoon(e, nama) {
+    e.preventDefault();
+    const toast = document.getElementById('toast');
+    toast.textContent = `⚡ Halaman "${nama}" segera hadir!`;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(20px)';
+    }, 2500);
+  }
+</script>
+</body>
+</html>

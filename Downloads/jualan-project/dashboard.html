@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — SalesAdmin Panel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ═══════════════════════════════════
+       SIDEBAR
+  ════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Logo -->
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">🛒</div>
+        <div class="sidebar-logo-text">
+          <span class="brand">SalesAdmin</span>
+          <span class="version">v1.0 · 2025</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigasi -->
+    <nav class="sidebar-nav">
+
+      <div class="nav-section-label">Menu Utama</div>
+
+      <a href="dashboard.html" class="nav-item active" title="Dashboard">
+        <div class="nav-item-icon">📊</div>
+        Dashboard
+      </a>
+
+      <a href="statistics.html" class="nav-item" title="Statistik">
+        <div class="nav-item-icon">📈</div>
+        Statistik
+        <span class="nav-badge">Live</span>
+      </a>
+
+      <div class="nav-section-label">Manajemen</div>
+
+      <a href="#" class="nav-item" title="Produk" onclick="showComingSoon(event, 'Produk')">
+        <div class="nav-item-icon">📦</div>
+        Produk
+      </a>
+
+      <a href="#" class="nav-item" title="Transaksi" onclick="showComingSoon(event, 'Transaksi')">
+        <div class="nav-item-icon">🧾</div>
+        Transaksi
+      </a>
+
+      <a href="#" class="nav-item" title="Pelanggan" onclick="showComingSoon(event, 'Pelanggan')">
+        <div class="nav-item-icon">👥</div>
+        Pelanggan
+      </a>
+
+      <div class="nav-section-label">Sistem</div>
+
+      <a href="#" class="nav-item" title="Pengaturan" onclick="showComingSoon(event, 'Pengaturan')">
+        <div class="nav-item-icon">⚙️</div>
+        Pengaturan
+      </a>
+
+    </nav>
+
+    <!-- Footer Sidebar (User Info + Logout) -->
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">A</div>
+        <div class="user-info">
+          <div class="user-name">Admin</div>
+          <div class="user-role">SUPER ADMIN</div>
+        </div>
+        <button class="logout-btn logout-trigger" title="Logout">🚪</button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- Overlay untuk mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ═══════════════════════════════════
+       KONTEN UTAMA
+  ════════════════════════════════════ -->
+  <div class="main-content">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggle" title="Toggle Sidebar">☰</button>
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-breadcrumb">Ringkasan sistem penjualan</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="currentDate">—</div>
+        <div class="topbar-notif" title="Notifikasi">
+          🔔
+          <span class="notif-dot"></span>
+        </div>
+        <button class="logout-btn logout-trigger" title="Logout" style="width:38px;height:38px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;">🚪</button>
+      </div>
+    </header>
+
+    <!-- Konten Halaman -->
+    <main class="page-content">
+
+      <!-- ── Kartu Statistik Ringkasan ── -->
+      <div class="stats-grid">
+
+        <!-- Total Produk -->
+        <div class="stat-card blue">
+          <div class="stat-card-header">
+            <div class="stat-icon blue">📦</div>
+            <div class="stat-trend up">↑ +12%</div>
+          </div>
+          <div class="stat-value" id="statProduk">0</div>
+          <div class="stat-label">Total Produk Aktif</div>
+          <div class="stat-sub">⏱ Diperbarui hari ini · 18 produk baru bulan ini</div>
+        </div>
+
+        <!-- Total Transaksi -->
+        <div class="stat-card green">
+          <div class="stat-card-header">
+            <div class="stat-icon green">🧾</div>
+            <div class="stat-trend up">↑ +8.4%</div>
+          </div>
+          <div class="stat-value" id="statTransaksi">0</div>
+          <div class="stat-label">Total Transaksi</div>
+          <div class="stat-sub">⏱ Bulan ini · 127 transaksi hari ini</div>
+        </div>
+
+        <!-- Total Pendapatan -->
+        <div class="stat-card orange">
+          <div class="stat-card-header">
+            <div class="stat-icon orange">💰</div>
+            <div class="stat-trend up">↑ +23.1%</div>
+          </div>
+          <div class="stat-value" id="statPendapatan">0</div>
+          <div class="stat-label">Total Pendapatan</div>
+          <div class="stat-sub">⏱ YTD 2025 · Tertinggi di kuartal ini</div>
+        </div>
+
+        <!-- Total Pelanggan -->
+        <div class="stat-card purple">
+          <div class="stat-card-header">
+            <div class="stat-icon purple">👥</div>
+            <div class="stat-trend up">↑ +5.7%</div>
+          </div>
+          <div class="stat-value" id="statPelanggan">0</div>
+          <div class="stat-label">Total Pelanggan</div>
+          <div class="stat-sub">⏱ Pelanggan aktif · 42 baru minggu ini</div>
+        </div>
+
+      </div>
+
+      <!-- ── Chart Transaksi Mingguan ── -->
+      <div class="charts-grid">
+        <div class="chart-card full-width">
+          <div class="section-header">
+            <div class="section-title"><span></span>Transaksi 7 Hari Terakhir</div>
+            <div style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);">
+              📅 17 Apr — 23 Apr 2025
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="dashboardChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Tabel Transaksi Terbaru ── -->
+      <div class="table-card">
+        <div class="section-header" style="padding: 20px 20px 0;">
+          <div class="section-title"><span></span>Transaksi Terbaru</div>
+          <a href="statistics.html" style="font-size: 13px; color: var(--accent); font-weight: 600; transition: var(--transition);">
+            Lihat semua →
+          </a>
+        </div>
+        <div class="table-scroll" style="margin-top: 16px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID Transaksi</th>
+                <th>Produk</th>
+                <th>Pelanggan</th>
+                <th style="text-align:center;">Qty</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Tanggal</th>
+              </tr>
+            </thead>
+            <tbody id="transaksiBody">
+              <!-- Diisi oleh script.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" style="
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  color: var(--text-primary);
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  box-shadow: var(--shadow);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+"></div>
+
+<script src="script.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', initDashboard);
+
+  function showComingSoon(e, nama) {
+    e.preventDefault();
+    const toast = document.getElementById('toast');
+    toast.textContent = `⚡ Halaman "${nama}" segera hadir!`;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(20px)';
+    }, 2500);
+  }
+</script>
+</body>
+</html>
