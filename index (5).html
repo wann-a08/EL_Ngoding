@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — SalesAdmin Panel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>" />
+</head>
+<body class="login-page">
+
+  <!-- Dekorasi background -->
+  <div class="login-orb-2"></div>
+
+  <!-- Kontainer login -->
+  <div class="login-container">
+    <div class="login-card">
+
+      <!-- Logo / Brand -->
+      <div class="login-logo">
+        <div class="login-logo-icon">🛒</div>
+        <div class="login-logo-text">
+          <span class="brand">SalesAdmin</span>
+          <span class="tagline">v1.0 · Panel Penjualan</span>
+        </div>
+      </div>
+
+      <!-- Judul -->
+      <h1 class="login-title">Selamat datang 👋</h1>
+      <p class="login-subtitle">Masuk ke akun admin Anda untuk melanjutkan.</p>
+
+      <!-- Pesan error (tersembunyi secara default) -->
+      <div class="error-message" id="errorMsg" role="alert"></div>
+
+      <!-- Form Login -->
+      <form id="loginForm" autocomplete="off" novalidate>
+
+        <!-- Input Username -->
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <div class="form-input-wrapper">
+            <span class="icon-left">👤</span>
+            <input
+              type="text"
+              id="username"
+              class="form-input"
+              placeholder="Masukkan username"
+              autocomplete="username"
+              spellcheck="false"
+            />
+          </div>
+        </div>
+
+        <!-- Input Password -->
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="form-input-wrapper">
+            <span class="icon-left">🔒</span>
+            <input
+              type="password"
+              id="password"
+              class="form-input"
+              placeholder="Masukkan password"
+              autocomplete="current-password"
+            />
+            <button type="button" class="toggle-password" id="togglePassword" title="Tampilkan/sembunyikan password">
+              👁️
+            </button>
+          </div>
+        </div>
+
+        <!-- Tombol Login -->
+        <button type="submit" class="btn-login" id="btnLogin">
+          🔑 Masuk ke Dashboard
+        </button>
+
+      </form>
+
+      <!-- Hint login -->
+      <div class="login-hint">
+        💡 Demo: username <span>admin</span> · password <span>admin123</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Inisialisasi halaman login saat DOM siap
+    document.addEventListener('DOMContentLoaded', initLoginPage);
+  </script>
+</body>
+</html>
